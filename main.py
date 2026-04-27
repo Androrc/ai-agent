@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 from google import genai
 import argparse
 from google.genai import types
+from prompts import system_prompt 
 
 def main():
-    print("Hello from ai-agent!")
 
     parser = argparse.ArgumentParser(description="Chatbot")
     parser.add_argument("user_prompt", type=str, help="User prompt")
@@ -25,7 +25,12 @@ def main():
     client = genai.Client(api_key=api_key)
 
     response = client.models.generate_content(
-    model='gemini-2.5-flash', contents=messages
+    model='gemini-2.5-flash', 
+    contents=messages,
+    config=types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        temperature=0
+        )
     )
 
     # Ensure usage metadata is available (used for debugging/token tracking)

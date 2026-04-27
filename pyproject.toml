@@ -1,10 +1,39 @@
+# pyproject.toml for AI Agent CLI (Prototype)
 [project]
-name = "ai-agent"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.13"
+name = "ai-agent"  # Project/package name
+version = "0.1.0"  # Current semantic version
+description = "Prototype CLI AI agent using the Gemini API"  # Short project summary
+readme = "README.md"  # Include long description from README
+requires-python = ">=3.13"  # Minimum Python version
+
+# Dependencies required for the project
 dependencies = [
-    "google-genai==1.12.1",
-    "python-dotenv==1.1.0",
+    "google-genai==1.12.1",  # Official Google Gemini API client
+    "python-dotenv==1.1.0",  # For loading environment variables from .env
 ]
+
+# Project authors
+authors = [
+    { name = "Androrc", email = "youremail@example.com" }
+]
+
+# Classifiers help users discover your project
+# See: https://pypi.org/classifiers/
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+# Keywords for PyPI or search
+keywords = ["AI", "LLM", "CLI", "Python", "Agent", "Gemini API"]
+
+# URLs for homepage and bug tracker
+urls = {
+    "Homepage" = "https://github.com/Androrc/ai-agent",
+    "Bug Tracker" = "https://github.com/Androrc/ai-agent/issues"
+}
+
+# CLI entry point: users can run `ai-agent` after installing the package
+[project.scripts]
+ai-agent = "ai_agent.cli:main"
