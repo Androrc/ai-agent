@@ -1,15 +1,44 @@
-# AI Agent CLI (Prototype)
+# AI Agent CLI 
 
-A command-line AI agent prototype using **Google Gemini API**.  
-Currently, it accepts text prompts from the user and returns AI-generated responses.  
+A command-line AI agent using **Google Gemini API**.
 
-This project is designed to **explore how LLMs can interact with code**, experiment with **feedback loops**, and understand **agentic coding workflows**.  
+Currently, it accepts text prompts from the user and returns AI-generated responses.
+
+This project was built for **learning and experimentation purposes**, inspired by modern agentic coding tools such as Cursor, Claude Code, and Zed Agent Mode.
+
+---
+
+## ⚠️ Security Warning
+
+This project is a **toy / educational AI agent** and is **NOT production-ready**.
+
+It does **not** implement the security, sandboxing, permission systems, or safety guarantees expected from real-world AI agents.
+
+The current implementation may expose risks if given access to:
+- sensitive files,
+- private repositories,
+- system commands,
+- API keys,
+- or unrestricted environments.
+
+Even commercial AI coding agents are not perfectly secure.  
+Use this project carefully and **do not deploy or use it as-is in production environments**.
+
+This repository exists purely to explore:
+- LLM tool usage,
+- feedback loops,
+- agent workflows,
+- and AI-assisted coding concepts.
+
+---
 
 ## 🚀 Project Goal
 
 - Learn how LLMs can be used for code analysis and reasoning.
 - Prototype CLI interactions for reading files and processing prompts.
 - Practice iterative improvement of AI-driven code tools.
+
+---
 
 ## 🛠 Current Features
 

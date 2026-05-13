@@ -25,46 +25,61 @@ def main():
 
     client = genai.Client(api_key=api_key)
 
-    response = client.models.generate_content(
-    model='gemini-2.5-flash', 
-    contents=messages,
-    config=types.GenerateContentConfig(
-        tools=[available_functions], system_instruction=system_prompt,
-        temperature=0
+    success = False
+
+    for _ in range(20):
+
+        response = client.models.generate_content(
+        model='gemini-2.5-flash', 
+        contents=messages,
+        config=types.GenerateContentConfig(
+            tools=[available_functions], system_instruction=system_prompt,
+            temperature=0
+            )
         )
-    )
 
-    # Ensure usage metadata is available (used for debugging/token tracking)
-    if response.usage_metadata is None:
-        raise RuntimeError("usage_metadata is None")
-    
-    if args.verbose:
+        # Ensure usage metadata is available (used for debugging/token tracking)
+        if response.usage_metadata is None:
+            raise RuntimeError("usage_metadata is None")
+        
+        if args.verbose:
 
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+            print(f"User prompt: {args.user_prompt}")
+            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
-    if not response.function_calls:
-        print(response.text)
-    else:
-        function_responses = []
+        for candidate in response.candidates:
+            messages.append(candidate.content)
 
-        for function_call in response.function_calls:
-            function_call_result = call_function(function_call, verbose=args.verbose)
+        if not response.function_calls:
+            print(response.text)
+            success = True
+            break 
+        else:
+            function_responses = []
 
-            if not function_call_result.parts:
-                raise Exception("empty parts in function call result")
-            
-            if function_call_result.parts[0].function_response is None:
-                raise Exception("missing function_response in part")
-            
-            if function_call_result.parts[0].function_response.response is None:
-                raise Exception("missing response in function_response")
-            
-            function_responses.append(function_call_result.parts[0])
+            for function_call in response.function_calls:
+                function_call_result = call_function(function_call, verbose=args.verbose)
 
-            if args.verbose:
-                print(f"-> {function_call_result.parts[0].function_response.response}")
+                if not function_call_result.parts:
+                    raise Exception("empty parts in function call result")
+                
+                if function_call_result.parts[0].function_response is None:
+                    raise Exception("missing function_response in part")
+                
+                if function_call_result.parts[0].function_response.response is None:
+                    raise Exception("missing response in function_response")
+                
+                function_responses.append(function_call_result.parts[0])
+
+                if args.verbose:
+                    print(f"-> {function_call_result.parts[0].function_response.response}")
+
+        messages.append(types.Content(role="user", parts=function_responses))
+   
+    if not success:
+        print("Error: model did not complete the task within the iteration limit.")
+        exit(1)
 
 if __name__ == "__main__":
     main()
