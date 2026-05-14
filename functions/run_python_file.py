@@ -51,7 +51,7 @@ def run_python_file(working_directory, file_path, args=None):
     except Exception as e:
       return f"Error: executing Python file: {e}"
 
-# gemini chamando função
+# Define the tool schema used for Gemini function calling
 schema_run_python_file = types.FunctionDeclaration(
     name="run_python_file",
     description="Executes a specified Python file relative to the working directory, with optional command-line arguments",

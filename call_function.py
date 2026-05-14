@@ -4,7 +4,7 @@ from functions.get_file_content import schema_get_file_content, get_file_content
 from functions.run_python_file import schema_run_python_file, run_python_file
 from functions.write_file import schema_write_file, write_file
 
-
+# Register all tool schemas exposed to the Gemini model
 available_functions = types.Tool(
     function_declarations=[schema_get_files_info, schema_get_file_content, schema_run_python_file,
      schema_write_file],
@@ -17,6 +17,7 @@ def call_function(function_call, verbose=False):
     else: 
         print(f" - Calling function: {function_call.name}")
 
+    # Map model tool calls to local Python function implementations
     function_map = {
     "get_file_content": get_file_content,
     "get_files_info": get_files_info,
@@ -39,6 +40,7 @@ def call_function(function_call, verbose=False):
     
     args = dict(function_call.args) if function_call.args else {}
 
+    # Restrict tool execution to the calculator workspace
     args["working_directory"] = "./calculator"
 
     function_result = function_map[function_name](**args)

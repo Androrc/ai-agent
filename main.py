@@ -48,9 +48,11 @@ def main():
             print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
             print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 
+        # Preserve conversation history across iterations
         for candidate in response.candidates:
             messages.append(candidate.content)
 
+        # If no tool calls were requested, return the final model response
         if not response.function_calls:
             print(response.text)
             success = True
@@ -61,6 +63,7 @@ def main():
             for function_call in response.function_calls:
                 function_call_result = call_function(function_call, verbose=args.verbose)
 
+                # Validate the function response structure before sending it back to the model
                 if not function_call_result.parts:
                     raise Exception("empty parts in function call result")
                 
@@ -75,6 +78,7 @@ def main():
                 if args.verbose:
                     print(f"-> {function_call_result.parts[0].function_response.response}")
 
+        # Send tool execution results back to the model for the next iteration
         messages.append(types.Content(role="user", parts=function_responses))
    
     if not success:

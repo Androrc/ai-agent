@@ -28,7 +28,7 @@ def get_file_content(working_directory, file_path):
     except Exception as e:
         return f"Error: {e}"
 
-# gemini chamando função
+# Define the tool schema used for Gemini function calling
 schema_get_file_content = types.FunctionDeclaration(
     name="get_file_content",
     description="Reads the contents of a specified file relative to the working directory",

@@ -27,7 +27,7 @@ def write_file(working_directory, file_path, content):
     except Exception as e:
         return f"Error: {e}"
 
-# gemini chamando função
+# Define the tool schema used for Gemini function calling
 schema_write_file = types.FunctionDeclaration(
     name="write_file",
     description="Writes or overwrites content to a specified file relative to the working directory",
